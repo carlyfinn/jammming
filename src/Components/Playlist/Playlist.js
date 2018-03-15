@@ -19,12 +19,11 @@ class Playlist extends React.Component {
     this.handleNameChange= this.handleNameChange.bind(this);
   }
 
-
   render() {
     return (
       <div className="Playlist">
-        <input defaultValue={'New Playlist'} onChange = {this.handleNameChange}/> //Step 61
-        <TrackList tracks = {this.props.playlistTracks} onRemove = {this.props.onRemove}/> //Pass the playlist tracks from the Playlist component to the TrackList component, Pass onRemove from the Playlist component to the TrackList component
+        <input defaultValue={'New Playlist'} onChange = {this.handleNameChange}/>
+        <TrackList tracks = {this.props.playlistTracks} onRemove = {this.props.onRemove}/>
         <a className="Playlist-save" onClick = {this.props.onSave}>SAVE TO SPOTIFY</a>
       </div>
     );
@@ -32,3 +31,6 @@ class Playlist extends React.Component {
 }
 
 export default Playlist;
+
+//Line 26 - Step 61
+// Line 27 Pass the playlist tracks from the Playlist component to the TrackList component, Pass onRemove from the Playlist component to the TrackList component

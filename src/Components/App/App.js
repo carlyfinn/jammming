@@ -58,8 +58,13 @@ class App extends React.Component {
  }
 
  savePlaylist(){
-   let playlistArray = this.state.playlistTracks;
-   let trackURIs = playlistArray.map(track => track.uri); //Generates an array of uri values called trackURIs from the playlistTracks property.
+   const trackUris = this.state.playlistTracks.map(track => track.uri);
+      Spotify.savePlaylist(this.state.playlistName, trackUris).then(() => {
+        this.setState({
+          playlistName: 'New Playlist',
+          playlistTracks: []
+        });
+      });
  }
 
  search(term){
@@ -73,11 +78,10 @@ class App extends React.Component {
       <div>
         <h1>Ja<span className="highlight">mmm</span>ing</h1>
         <div className="App">
-          <SearchResults searchResults = {this.state.searchResults} onAdd = {this.addTrack}/> //Pass .addTrack() as an onAdd attribute
+          <SearchResults searchResults = {this.state.searchResults} onAdd = {this.addTrack}/>
           <SearchBar searchBar = {this.state.searchBar} onSearch = {this.search}/>
           <div className="App-playlist">
-        //   Add a SearchResults component -->
-            <Playlist playlistName = {this.state.playlistName} playlistTracks = {this.state.playlistTracks} onRemove = {this.removeTrack} onNameChange = {this.updatePlaylistName} onSave = {this.savePlaylist}/> //Pass the playlist name and tracks from the App component to the Playlist component
+            <Playlist playlistName = {this.state.playlistName} playlistTracks = {this.state.playlistTracks} onRemove = {this.removeTrack} onNameChange = {this.updatePlaylistName} onSave = {this.savePlaylist}/>
           </div>
         </div>
       </div>
@@ -86,3 +90,6 @@ class App extends React.Component {
 }
 
 export default App;
+
+//Line 79 Pass the playlist name and tracks from the App component to the Playlist component
+//Line 76 Pass .addTrack() as an onAdd attribute
