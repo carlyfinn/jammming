@@ -41,15 +41,16 @@ const Spotify = {
     }).then(response => {
       return response.json();
     }).then(jsonResponse => { //Convert the returned response to JSON
-      if (jsonResponse.tracks) {
-        return jsonResponse.tracks.map(track => ({ //map the converted JSON to an array of tracks
+      if (!jsonResponse.tracks) {
+        return [];
+      }
+        return jsonResponse.tracks.items.map(track => ({ //map the converted JSON to an array of tracks
           id: track.id,
           name: track.name,
           artist: track.artists[0].name,
           album: track.album.name,
           uri: track.uri
         }));
-      }
     });
   },
 
