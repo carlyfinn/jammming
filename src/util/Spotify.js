@@ -8,14 +8,19 @@ const Spotify = {
   getAccessToken(){
     if(accessToken){ //Check if the user's access token is already set. If it is, return the value saved to access token.
       return accessToken;
-    }else if (window.location.href.match(/access_token=([^&]*)/) && window.location.href.match(/expires_in=([^&]*)/)){ //check the URL to see if accessToken has just been obtained
+    }
+
+    const accessTokenMatch = window.location.href.match(/access_token=([^&]*)/);
+    const expiresInMatch = window.location.href.match(/expires_in=([^&]*)/);
+
+    if (accessTokenMatch && expiresInMatch){ //check the URL to see if accessToken has just been obtained
       /*
       Set the access token value
       Set a variable for expiration time
       Set the access token to expire at the value for expiration time
       */
-      accessToken = window.location.href.match(/access_token=([^&]*)/)[1];
-      expiresIn = window.location.href.match(/expires_in=([^&]*)/)[1];
+      accessToken = accessTokenMatch[1];
+      expiresIn = Number(expiresInMatch[1]);
 
       window.setTimeout(() => accessToken = '', expiresIn * 1000); //wipe the access token and URL parameters
       window.history.pushState('Access Token', null, '/'); //wipe the access token and URL parameters
@@ -46,26 +51,26 @@ const Spotify = {
   },
 
   savePlaylist(name, trackUris) {
-       if (!name || !trackUris.length) {
+       if (!name || !trackUris.length) { //check if there are values saved to the method's two arguments. If not, return.
            return;
        }
 
-       const accessToken = Spotify.getAccessToken();
+       const accessToken = Spotify.getAccessToken(); //An access token variable, set to the current user's access token
        const headers = { Authorization: `Bearer ${accessToken}` };
-       let userId;
+       let userId; //an empty variable for the user's ID
 
-       return fetch('https://api.spotify.com/v1/me', { headers: headers }
+       return fetch('https://api.spotify.com/v1/me', { headers: headers } //Make a request that returns the user's Spotify username
        ).then(response => response.json()
-           ).then(jsonResponse => {
-               userId = jsonResponse.id;
-               return fetch(`https://api.spotify.com/v1/users/${userId}/playlists`, {
+     ).then(jsonResponse => { //convert the response to JSON
+               userId = jsonResponse.id; // save the response id parameter to the user's ID variable
+               return fetch(`https://api.spotify.com/v1/users/${userId}/playlists`, { //Use the returned user ID to make a POST request that creates a new playlist in the user's account and returns a playlist ID
                    headers: headers,
                    method: 'POST',
                    body: JSON.stringify({ name: name })
                }).then(response => response.json()
                    ).then(jsonResponse => {
                        const playlistId = jsonResponse.id;
-                       return fetch(`https://api.spotify.com/v1/users/${userId}/playlists/${playlistId}/tracks`, {
+                       return fetch(`https://api.spotify.com/v1/users/${userId}/playlists/${playlistId}/tracks`, { //se the returned user ID to make a POST request that creates a new playlist in the user's account and returns a playlist ID.
                            headers: headers,
                            method: 'POST',
                            body: JSON.stringify({ uris: trackUris })

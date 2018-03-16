@@ -12,23 +12,11 @@ class App extends React.Component {
     super(props); //call the parent constructor
 
     this.state = { //option 2
-      searchResults: [
-        {name: 'Carly',
-        artist: 'Rihanna',
-        properties: 'idk'},
-        {
-         name: 'Ana',
-         artist: 'Beyonce',
-         properties: 'still who knows'
-       }
-      ],
-      playlistName: 'Tunez',
-      playlistTracks: [
-        {name: ' ',
-        artist: ' ',
-        album: ' '}
-      ]
+      searchResults: [],
+      playlistName: "New Playlist",
+      playlistTracks: []
     }
+  
 
     this.addTrack = this.addTrack.bind(this); //Bind the current value of this to .addTrack().
     this.removeTrack = this.removeTrack.bind(this);
@@ -78,9 +66,9 @@ class App extends React.Component {
       <div>
         <h1>Ja<span className="highlight">mmm</span>ing</h1>
         <div className="App">
-          <SearchResults searchResults = {this.state.searchResults} onAdd = {this.addTrack}/>
           <SearchBar searchBar = {this.state.searchBar} onSearch = {this.search}/>
           <div className="App-playlist">
+            <SearchResults searchResults = {this.state.searchResults} onAdd = {this.addTrack}/>
             <Playlist playlistName = {this.state.playlistName} playlistTracks = {this.state.playlistTracks} onRemove = {this.removeTrack} onNameChange = {this.updatePlaylistName} onSave = {this.savePlaylist}/>
           </div>
         </div>
