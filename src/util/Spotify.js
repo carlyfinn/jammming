@@ -2,7 +2,6 @@ const client_id = 'd6e496b588e148f4a8f711962e2f15cc';
 const redirect_uri = 'http://localhost:3000/';
 
 let accessToken = '';
-let expiresIn = '';
 
 const Spotify = {
   getAccessToken(){
@@ -20,7 +19,7 @@ const Spotify = {
       Set the access token to expire at the value for expiration time
       */
       accessToken = accessTokenMatch[1];
-      expiresIn = Number(expiresInMatch[1]);
+      const expiresIn = Number(expiresInMatch[1]);
 
       window.setTimeout(() => accessToken = '', expiresIn * 1000); //wipe the access token and URL parameters
       window.history.pushState('Access Token', null, '/'); //wipe the access token and URL parameters
@@ -33,10 +32,14 @@ const Spotify = {
   },
 
   search(term){
+    const accessToken = Spotify.getAccessToken();
+
     return fetch(`https://api.spotify.com/v1/search?type=track&q=${term}`, { //start the promise chain by returning a GET request (using fetch()) to the following Spotify endpoint
       headers: {
         Authorization: `Bearer ${accessToken}` //Add an Authorization header to the request containing the access token
       }
+    }).then(response => {
+      return response.json();
     }).then(jsonResponse => { //Convert the returned response to JSON
       if (jsonResponse.tracks) {
         return jsonResponse.tracks.map(track => ({ //map the converted JSON to an array of tracks
