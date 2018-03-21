@@ -25,21 +25,20 @@ class App extends React.Component {
     this.search = this.search.bind(this);
   }
 
-  addTrack(track){
-   let currentTracks = this.state.playlistTracks; //this sets a temporary variable of the playlistTracks
-   if (!this.state.playlistTracks.find(savedTrack => savedTrack.id === track.id)){ //doesn't find any matches
-     currentTracks.push(track); //this adds the track to the array of tracks
-   }
-   this.setState({playlistTracks: currentTracks}); //this sets the state to include the new track
- }
+  addTrack(track) {
+    let tracks = this.state.playlistTracks;
+    if (tracks.find(savedTrack => savedTrack.id === track.id)) {
+      return;
+    }
+    tracks.push(track);
+    this.setState({playlistTracks: tracks});
+  }
 
- removeTrack(track){
-    let currentTracks = this.state.playlistTracks; //this sets a temporary variable of the playlistTracks
-   if (this.state.playlistTracks.find(savedTrack => savedTrack.id === track.id)){
-     currentTracks.pop(track); //this removes the track from the array of tracks
-   }
-   this.setState({playlistTracks: currentTracks}); //this sets the state to remove the track
- }
+  removeTrack(track) {
+    let tracks = this.state.playlistTracks;
+    tracks = tracks.filter(currentTrack => currentTrack.id !== track.id);
+    this.setState({playlistTracks: tracks});
+  }
 
   updatePlaylistName(name){
    this.setState({playlistName: name});
