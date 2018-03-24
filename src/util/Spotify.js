@@ -1,5 +1,5 @@
 const client_id = 'd6e496b588e148f4a8f711962e2f15cc';
-const redirect_uri = 'http://localhost:3000/';
+const redirect_uri = 'https://carlyfinnjammming.herokuapp.com';
 
 let accessToken = '';
 
